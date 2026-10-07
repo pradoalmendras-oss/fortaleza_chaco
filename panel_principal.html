@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- POLÍTICA DE SEGURIDAD (CSP) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com;">
+  
+  <title>INVENTARIO-CHACO - Sistema de Control de Inventarios</title>
+  ...
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INVENTARIO-CHACO - Sistema de Control de Inventarios</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../../recursos/css/dashboar.css" />
+
+  <style>
+    /* Ocultar secciones inactivas */
+    .view-section {
+      display: none;
+    }
+    .view-section.active {
+      display: block;
+    }
+
+    /* Estilos del formulario de usuarios dentro del panel */
+    .user-form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .form-control {
+      padding: 9px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      background-color: #f8fafc;
+      outline: none;
+    }
+
+    .btn-save {
+      background-color: #0284c7;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-status {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-activo {
+      background-color: #dcfce7;
+      color: #15803d;
+    }
+
+    /* Estilos para el contenedor de búsqueda y botón eliminar */
+    .card-header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .search-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: #64748b;
+    }
+
+    .input-search {
+      padding: 8px 12px 8px 35px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      width: 280px;
+      background-color: #ffffff;
+      outline: none;
+    }
+
+    .btn-eliminar {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-eliminar:hover {
+      background-color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra de título -->
+  <div class="window-titlebar">
+    <div class="titlebar-text">INVENTARIO-CHACO - Sistema de Control de Inventarios</div>
+    <div class="titlebar-controls">
+      <button class="titlebar-btn"><i class="fa-solid fa-minus"></i></button>
+      <button class="titlebar-btn"><i class="fa-regular fa-square"></i></button>
+      <button class="titlebar-btn close-btn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+  </div>
+
+  <div class="app-container">
+
+    <!-- Sidebar lateral -->
+    <aside class="sidebar">
+      <div class="brand">
+        <i class="fa-solid fa-droplet brand-logo"></i>
+        <div class="brand-text">
+          <h2>INVENTARIO-CHACO</h2>
+          <span>Sistema de Inventarios</span>
+        </div>
+      </div>
+
+      <a href="#" id="menuDashboard" class="menu-item active">
+        <i class="fa-solid fa-house"></i>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="menu-category">INVENTARIO</div>
+      <a href="#" class="menu-item"><i class="fa-solid fa-box"></i><span>Productos</span></a>
+      <a href="#" class="menu-item"><i class="fa-solid fa-clipboard-list"></i><span>Inventario</span></a>
+      <a href="#" class="menu-item"><i class="fa-solid fa-arrow-down"></i><span>Entradas</span></a>
+      <a href="#" class="menu-item"><i class="fa-solid fa-arrow-up"></i><span>Salidas</span></a>
+      <a href="#" class="menu-item"><i class="fa-solid fa-chart-column"></i><span>Kardex</span></a>
+
+      <div class="menu-category">GESTIÓN</div>
+      <a href="#" class="menu-item"><i class="fa-solid fa-truck"></i><span>Proveedores</span></a>
+      <a href="#" class="menu-item"><i class="fa-solid fa-users"></i><span>Clientes</span></a>
+      <a href="#" class="menu-item"><i class="fa-solid fa-warehouse"></i><span>Almacenes</span></a>
+
+      <div class="menu-category">ADMINISTRACIÓN</div>
+      <a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i><span>Reportes</span></a>
+      <a href="#" id="menuUsuarios" class="menu-item"><i class="fa-solid fa-user-gear"></i><span>Usuarios</span></a>
+      <a href="#" class="menu-item"><i class="fa-solid fa-gear"></i><span>Configuración</span></a>
+
+      <div class="logout-wrapper">
+        <a href="#" id="btnCerrarSesion" class="btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Cerrar sesión</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal Dinámico -->
+    <main class="main-content">
+
+      <header class="topbar">
+        <h1 id="topbarTitulo">Panel Principal</h1>
+        <div class="user-profile">
+          <div class="avatar">AD</div>
+          <div class="user-details">
+            <span class="user-name">Administrador <i class="fa-solid fa-chevron-down"></i></span>
+            <span class="user-role">Administrador del sistema</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- VISTA 1: DASHBOARD -->
+      <div id="vistaDashboard" class="view-section active">
+        <section class="welcome-banner">
+          <i class="fa-solid fa-droplet welcome-icon"></i>
+          <div>
+            <h2>Bienvenido a INVENTARIO-CHACO</h2>
+            <p>Sistema de control de inventarios de la planta embotelladora de agua.</p>
+          </div>
+        </section>
+
+        <section class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon icon-blue"><i class="fa-solid fa-box-archive"></i></div>
+            <div class="kpi-body">
+              <span class="kpi-title">Total de productos</span>
+              <div class="kpi-value">128</div>
+              <span class="kpi-sub green"><i class="fa-solid fa-arrow-up"></i> 8 productos nuevos</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon icon-green"><i class="fa-solid fa-database"></i></div>
+            <div class="kpi-body">
+              <span class="kpi-title">Stock disponible</span>
+              <div class="kpi-value">2,540</div>
+              <span class="kpi-sub gray">Unidades disponibles</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon icon-purple"><i class="fa-solid fa-upload"></i></div>
+            <div class="kpi-body">
+              <span class="kpi-title">Entradas del mes</span>
+              <div class="kpi-value">856</div>
+              <span class="kpi-sub green"><i class="fa-solid fa-arrow-up"></i> 12% respecto al mes anterior</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon icon-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="kpi-body">
+              <span class="kpi-title">Productos bajo mínimo</span>
+              <div class="kpi-value">7</div>
+              <span class="kpi-sub red"><i class="fa-solid fa-triangle-exclamation"></i> Requieren atención</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="dashboard-grid">
+          <div class="card card-movements">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-rotate-left"></i> Últimos movimientos</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="movements-table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Producto</th>
+                    <th>Movimiento</th>
+                    <th>Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>16/09/2026 10:24</td>
+                    <td>Botellón 20L</td>
+                    <td><span class="badge badge-entrada">ENTRADA</span></td>
+                    <td>+120</td>
+                  </tr>
+                  <tr>
+                    <td>16/09/2026 09:15</td>
+                    <td>Botellas 2L</td>
+                    <td><span class="badge badge-salida">SALIDA</span></td>
+                    <td>-80</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card card-alerts">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-triangle-exclamation"></i> Alertas de inventario</h3>
+            </div>
+            <div class="alerts-list">
+              <div class="alert-box">
+                <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+                <div class="alert-info">
+                  <strong>Botellones 20L</strong>
+                  <p>Stock actual: 15 unidades</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- VISTA 2: GESTIÓN DE USUARIOS -->
+      <div id="vistaUsuarios" class="view-section">
+        <section class="card" style="margin-bottom: 20px;">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-user-plus"></i> Registrar Nuevo Usuario</h3>
+          </div>
+          <form id="formUsuario">
+            <!-- Campo oculto necesario para saber si se edita un registro -->
+            <input type="hidden" id="txtIdUsuario" value="" />
+
+            <div class="user-form-grid">
+              
+              <!-- Campo 1: Nombre Completo -->
+              <div class="form-group">
+                <label for="txtNombre">Nombre Completo</label>
+                <input type="text" id="txtNombre" class="form-control" placeholder="Ej. Juan" required />
+              </div>
+
+              <!-- Campo 2: Apellido Primero -->
+              <div class="form-group">
+                <label for="txtApellido1">Apellido Primero</label>
+                <input type="text" id="txtApellido1" class="form-control" placeholder="Ej. Pérez" required />
+              </div>
+
+              <!-- Campo 3: Apellido Segundo -->
+              <div class="form-group">
+                <label for="txtApellido2">Apellido Segundo</label>
+                <input type="text" id="txtApellido2" class="form-control" placeholder="Ej. Gómez" />
+              </div>
+
+              <!-- Campo 4: Celular -->
+              <div class="form-group">
+                <label for="txtCelular">Celular</label>
+                <input type="text" id="txtCelular" class="form-control" placeholder="Ej. 70000000" />
+              </div>
+
+              <!-- Campo 5: Password CON BOTÓN GENERAR E INTEGRACIÓN ONCLICK -->
+              <div class="form-group">
+                <label for="txtPassword">Password</label>
+                <div style="display: flex; gap: 6px;">
+                  <input type="text" id="txtPassword" class="form-control" placeholder="Escribe o genera una clave" required />
+                  <button type="button" id="btnGenerarPass" onclick="generarClaveManual()" class="btn-save" style="background-color: #6c757d; white-space: nowrap; padding: 0 12px; cursor: pointer;">
+                    <i class="fa-solid fa-dice"></i> AL
+                  </button>
+                </div>
+              </div>
+
+              <!-- Campo 6: Rol de Acceso -->
+              <div class="form-group">
+                <label for="selectRol">Rol de Acceso</label>
+                <select id="selectRol" class="form-control" required>
+                  <option value="Administrador">Administrador</option>
+                  <option value="Operador">Operador de Almacén</option>
+                </select>
+              </div>
+
+              <!-- Botón de guardado -->
+              <div class="form-group" style="justify-content: flex-end;">
+                <button type="submit" class="btn-save">
+                  <i class="fa-solid fa-floppy-disk"></i> Guardar Usuario
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </section>
+
+        <!-- Tabla de Usuarios Registrados con Buscador Integrado -->
+        <section class="card">
+          <div class="card-header card-header-flex">
+            <h3><i class="fa-solid fa-users-gear"></i> Usuarios Registrados</h3>
+            
+            <!-- CAJA DE BÚSQUEDA AGREGADA AQUÍ -->
+            <div class="search-container">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input 
+                type="text" 
+                id="txtBuscarUsuario" 
+                class="input-search" 
+                placeholder="Buscar por nombre, celular o rol..."
+              />
+            </div>
+          </div>
+
+          <div class="table-responsive" style="margin-top: 10px;">
+            <table class="movements-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre Completo</th>
+                  <th>Apellido Primero</th>
+                  <th>Apellido Segundo</th>
+                  <th>Celular</th>
+                  <th>Password</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tablaUsuarios">
+                <!-- Se llena dinámicamente con usuario.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../../recursos/js/panel_principal.js"></script>
+  <script src="../../recursos/js/usuario.js"></script>
+</body>
+</html>

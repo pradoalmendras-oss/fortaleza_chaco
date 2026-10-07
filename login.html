@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FORTALEZA CHACO - Iniciar Sesión</title>
+
+  <!-- Favicon con el logo -->
+  <link rel="icon" type="image/svg+xml" href="../../recursos/img/logo-icon.svg" />
+
+  <!-- Iconos de FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Hoja de Estilos de Login -->
+  <link rel="stylesheet" href="../../recursos/css/login.css" />
+</head>
+<body>
+
+  <!-- ===== Splash: logo grande con animación de entrada/salida ===== -->
+  <div class="splash-overlay" id="splashOverlay">
+    <img id="splashLogo" src="../../recursos/img/logo-icon.svg" class="splash-logo" alt="Fortaleza Chaco" />
+  </div>
+
+  <div class="login-container">
+
+    <!-- Lado Izquierdo: Branding y Características -->
+    <div class="brand-section">
+
+      <!-- Fondo decorativo: blobs + burbujas -->
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+      <div class="bubbles" id="bubbles"></div>
+
+      <div class="brand-content">
+        <div class="logo-wrapper">
+          <img src="../../recursos/img/logo-icon.svg" alt="Fortaleza Chaco" class="logo-icon-img" />
+          <h1>FORTALEZA CHACO</h1>
+          <span class="tagline">POS & INVENTORY</span>
+        </div>
+
+        <h2>Bienvenido</h2>
+        <p class="subtitle">Sistema De Control De Inventario</p>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Gestión de Ventas</span>
+          </div>
+          <div class="feature-card">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span>Control de Stock</span>
+          </div>
+          <div class="feature-card">
+            <i class="fa-solid fa-file-invoice"></i>
+            <span>Reportes en Tiempo Real</span>
+          </div>
+          <div class="feature-card">
+            <i class="fa-solid fa-cash-register"></i>
+            <span>Gestión de Caja</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lado Derecho: Formulario de Login -->
+    <div class="form-section">
+      <div class="login-card">
+        <img src="../../recursos/img/logo.svg" alt="Fortaleza Chaco" class="logo-form" />
+
+        <h3>Iniciar Sesión</h3>
+        <p class="card-subtitle">Acceda con sus credenciales</p>
+
+        <form id="loginForm">
+          <div class="input-group">
+            <label for="username">Usuario</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" id="username" placeholder="Ingrese su usuario" required />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="password">Contraseña</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="password" placeholder="Ingrese su contraseña" required />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-login">
+            <i class="fa-solid fa-right-to-bracket"></i> INICIAR SESIÓN
+          </button>
+
+          <a href="#" class="forgot-password">¿Problemas al acceder?</a>
+        </form>
+
+        <div class="footer-copy">
+          © 2026 Sistema de Punto de Venta - v1.0.0
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== Control del splash: lo oculta y elimina de forma segura ===== -->
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        const overlay = document.getElementById('splashOverlay');
+        if (overlay) {
+          overlay.classList.add('splash-hide');
+          setTimeout(function () { overlay.remove(); }, 850);
+        }
+      }, 1800);
+    });
+
+    // Si el logo no carga, oculta el splash de inmediato en vez de dejarlo en blanco
+    document.getElementById('splashLogo').addEventListener('error', function () {
+      const overlay = document.getElementById('splashOverlay');
+      if (overlay) overlay.remove();
+    });
+  </script>
+
+  <!-- Generador de burbujas del fondo -->
+  <script>
+    const bubbleBox = document.getElementById('bubbles');
+    const totalBurbujas = 20;
+    for (let i = 0; i < totalBurbujas; i++) {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = 6 + Math.random() * 20;
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      b.style.left = Math.random() * 100 + '%';
+      b.style.animationDuration = (7 + Math.random() * 8) + 's';
+      b.style.animationDelay = (Math.random() * 8) + 's';
+      bubbleBox.appendChild(b);
+    }
+  </script>
+
+  <!-- Script de Redirección -->
+  <script src="../../recursos/js/login.js"></script>
+</body>
+</html>
